@@ -2,9 +2,8 @@
 <resources>
     <declare-styleable name="SmoothBottomBar">
         <attr name="bar_background" format="color" />
-        <attr name="bar_iconActiveColor" format="color" />
+        <attr name="bar_selectorColor" format="color" />
         <attr name="bar_iconColor" format="color" />
-        <attr name="bar_textActiveColor" format="color" />
         <attr name="bar_textColor" format="color" />
     </declare-styleable>
 </resources>

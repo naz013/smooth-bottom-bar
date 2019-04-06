@@ -24,11 +24,11 @@ class SmoothBottomBar : View {
 
     private var mTabs: List<Tab> = listOf()
     @ColorInt
-    private var mBgColor: Int = Color.BLUE
+    private var mBgColor: Int = Color.parseColor("#110A88")
     @ColorInt
     private var mTextColor: Int = Color.WHITE
     @ColorInt
-    private var mSelectorColor: Int = Color.LTGRAY
+    private var mSelectorColor: Int = Color.parseColor("#40FFFFFF")
 
     private val mTextPaint = Paint()
     private val mSelectorPaint = Paint()
@@ -43,11 +43,15 @@ class SmoothBottomBar : View {
     private var mX: Float = 0.toFloat()
     private var mY: Float = 0.toFloat()
 
+    private var mOnTabSelectedListener: OnTabSelectedListener? = null
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        this.mTabs = defaultTabs()
+
         if (attrs != null) {
             val a = context.theme.obtainStyledAttributes(attrs, R.styleable.SmoothBottomBar, 0, 0)
             try {
@@ -60,6 +64,7 @@ class SmoothBottomBar : View {
                 a.recycle()
             }
         }
+
         mTextPaint.color = mTextColor
         mTextPaint.style = Paint.Style.STROKE
         mTextPaint.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 15.toFloat(), resources.displayMetrics)
@@ -68,8 +73,17 @@ class SmoothBottomBar : View {
         mSelectorPaint.style = Paint.Style.FILL
 
         mIconPaint.style = Paint.Style.STROKE
+        setOnTouchListener { _, _ -> false }
+    }
 
-        setOnTouchListener { v, event -> processTouch(v, event) }
+    override fun setOnLongClickListener(l: OnLongClickListener?) {
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+    }
+
+    override fun setOnTouchListener(l: OnTouchListener?) {
+        super.setOnTouchListener { v, event -> processTouch(v, event) }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -82,9 +96,21 @@ class SmoothBottomBar : View {
         }
     }
 
+    fun setOnTabSelectedListener(listener: ((position: Int) -> Unit)?) {
+        this.mOnTabSelectedListener = object : OnTabSelectedListener {
+            override fun onTabSelected(position: Int) {
+                listener?.invoke(position)
+            }
+        }
+    }
+
+    fun setOnTabSelectedListener(listener: OnTabSelectedListener?) {
+        this.mOnTabSelectedListener = listener
+    }
+
     fun setTabs(tabs: List<Tab>) {
-        if (tabs.isEmpty()) {
-            throw IllegalArgumentException("Tabs cannot be empty")
+        if (tabs.size < 2 || tabs.size > 5) {
+            throw IllegalArgumentException("View can only handle from 2 to 5 tabs")
         }
         this.mTabs = tabs
         invalidate()
@@ -100,31 +126,33 @@ class SmoothBottomBar : View {
 
     private fun calculateRectangles(width: Int, height: Int) {
         val elements = mutableListOf<InnerTab>()
-        val margin = dp2px(16)
-        val tabWidth = (width - (margin * 2)) / mTabs.size
-        for (i in 0 until mTabs.size) {
-            val tab = mTabs[i]
-            val left = i * tabWidth + margin
-            val rect = Rect(left, margin, left + tabWidth, height - margin)
-            val leftHalf = Rect(rect.left, rect.top, rect.centerX(), rect.bottom)
-            val rightHalf = Rect(rect.centerX(), rect.top, rect.right, rect.bottom)
-            val label = Label(tab.title ?: "", 0, PointF(rightHalf.left.toFloat(), rightHalf.centerY().toFloat()), mTextPaint, rightHalf)
-            val iconHeight = rect.height() / 2
-            val iconHeightHalf = iconHeight / 2
-            val onPoint = PointF(leftHalf.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
-            val offPoint = PointF(rect.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
-            val iconBounds = Rect(0, 0, iconHeight, iconHeight)
-            val icon = Icon(onPoint, toDrawable(tab.icon), 255, offPoint, mIconPaint, iconBounds)
-            val innerTab = InnerTab(icon, label, rect)
-            elements.add(innerTab)
-            if (i == 0) {
-                mSelector = Selector(PointF(margin.toFloat(), margin.toFloat()), mSelectorPaint, rect)
+        if (mTabs.isNotEmpty()) {
+            val margin = dp2px(16)
+            val tabWidth = (width - (margin * 2)) / mTabs.size
+            for (i in 0 until mTabs.size) {
+                val tab = mTabs[i]
+                val left = i * tabWidth + margin
+                val rect = Rect(left, margin, left + tabWidth, height - margin)
+                val leftHalf = Rect(rect.left, rect.top, rect.centerX(), rect.bottom)
+                val rightHalf = Rect(rect.centerX(), rect.top, rect.right, rect.bottom)
+                val label = Label(tab.title ?: "", 0, PointF(rightHalf.left.toFloat(), rightHalf.centerY().toFloat()), mTextPaint, rightHalf)
+                val iconHeight = rect.height() / 2
+                val iconHeightHalf = iconHeight / 2
+                val onPoint = PointF(leftHalf.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
+                val offPoint = PointF(rect.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
+                val iconBounds = Rect(0, 0, iconHeight, iconHeight)
+                val icon = Icon(onPoint, toDrawable(tab.icon), 255, offPoint, mIconPaint, iconBounds)
+                val innerTab = InnerTab(icon, label, rect)
+                elements.add(innerTab)
+                if (i == 0) {
+                    mSelector = Selector(PointF(margin.toFloat(), margin.toFloat()), mSelectorPaint, rect)
+                }
             }
-        }
-        objects.clear()
-        objects.addAll(elements)
-        if (mSelectedItem in 0..objects.size) {
-            selectTab(mSelectedItem)
+            objects.clear()
+            objects.addAll(elements)
+            if (mSelectedItem in 0..objects.size) {
+                selectTab(mSelectedItem)
+            }
         }
     }
 
@@ -151,8 +179,6 @@ class SmoothBottomBar : View {
                 mX = event.x
                 mY = event.y
                 isSlided = false
-                val item = findIndex(event.x, event.y)
-                printLog("processTouch: down $item")
                 return true
             }
             event.action == MotionEvent.ACTION_MOVE -> {
@@ -160,7 +186,6 @@ class SmoothBottomBar : View {
                     isSlided = true
                     return false
                 }
-                printLog("processTouch: slide ")
                 return true
             }
             event.action == MotionEvent.ACTION_UP -> {
@@ -170,12 +195,8 @@ class SmoothBottomBar : View {
                         deSelectTab(mSelectedItem)
                         selectTab(item)
                         mSelectedItem = item
-//                        invalidate()
-                        //                    if (getOnTabSelectedListener() != null) {
-                        //                        getOnTabSelectedListener().onTabSelected(item)
-                        //                    }
+                        mOnTabSelectedListener?.onTabSelected(item)
                     }
-                    printLog("processTouch: up $item")
                     v.playSoundEffect(SoundEffectConstants.CLICK)
                 }
                 isSlided = false
@@ -244,7 +265,15 @@ class SmoothBottomBar : View {
         )
     }
 
-    inner class InnerTab(var icon: Icon, var label: Label, bounds: Rect)
+    private fun defaultTabs(): List<Tab> {
+        return listOf(
+            Tab(icon = R.drawable.ic_action_home, title = "Home"),
+            Tab(icon = R.drawable.ic_action_inbox, title = "Inbox"),
+            Tab(icon = R.drawable.ic_action_profile, title = "Profile")
+        )
+    }
+
+    inner class InnerTab(private var icon: Icon, private var label: Label, bounds: Rect)
         : PaintObject(PointF(bounds.left.toFloat(), bounds.top.toFloat()), Paint(), bounds) {
         override fun draw(canvas: Canvas) {
             icon.draw(canvas)
@@ -320,6 +349,10 @@ class SmoothBottomBar : View {
         }
     }
 
+    interface OnTabSelectedListener {
+        fun onTabSelected(position: Int)
+    }
+
     inner class Label(private var text: String, var alpha: Int = 0, defaultPoint: PointF, paint: Paint, bounds: Rect) :
         PaintObject(defaultPoint, paint, bounds) {
 
@@ -339,8 +372,8 @@ class SmoothBottomBar : View {
             paint.alpha = alpha
             paint.getTextBounds(text, 0, text.length, r)
 
-            if (objects.size > 3) {
-                val fac = bounds.width().toFloat() / r.width().toFloat()
+            val fac = bounds.width().toFloat() * 0.9f / r.width().toFloat()
+            if (fac < 1.0f) {
                 mTextPaint.textSize = mTextPaint.textSize * fac
             }
 

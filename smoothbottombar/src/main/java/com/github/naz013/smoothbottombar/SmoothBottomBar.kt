@@ -291,7 +291,7 @@ class SmoothBottomBar : View {
         }
     }
 
-    inner class Icon(private val onPoint: PointF, private val drawable: Bitmap?, var alpha: Int = 255,
+    inner class Icon(private val onPoint: PointF, private val drawable: Bitmap?, var alpha: Int = 123,
                      defaultPoint: PointF, paint: Paint, bounds: Rect) : PaintObject(defaultPoint, paint, bounds) {
 
         private val alphaPropertyAnim = object : FloatPropertyCompat<Icon>("icon_alpha") {

@@ -38,6 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_marginTop="16dp"
+        app:bar_selectorColor="#80ffffff"
+        app:bar_textColor="#ffffff"
         app:bar_background="#d67388" />
 
 </LinearLayout>

@@ -3,13 +3,15 @@ Simple bottom navigation view library for Android (Kotlin)
 
 [![](https://jitpack.io/v/naz013/smooth-bottom-bar.svg)](https://jitpack.io/#naz013/smooth-bottom-bar)
 
+Design by Alejandro: [Dribble](https://dribbble.com/shots/6251784-Navigation-Menu-Animation)
+
 Screenshot
 
 <img src="https://github.com/naz013/smooth-bottom-bar/raw/master/res/screenshot.png" width="400" alt="Screenshot">
 
 Sample APP
 --------
-[Download](https://github.com/naz013/ColorSlider/raw/master/app/release/app-release.apk)
+[Download](https://github.com/naz013/smooth-bottom-bar/raw/master/app/release/app-release.apk)
 
 [Google Play](https://play.google.com/store/apps/details?id=com.colorslider.example)
 

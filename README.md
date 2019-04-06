@@ -1,11 +1,11 @@
 # BottomNavigationView
 Simple bottom navigation view library for Android (Kotlin)
 
-[![](https://jitpack.io/v/naz013/ColorSlider.svg)](https://jitpack.io/#naz013/ColorSlider)
+[![](https://jitpack.io/v/naz013/smooth-bottom-bar.svg)](https://jitpack.io/#naz013/smooth-bottom-bar)
 
 Screenshot
 
-<img src="https://github.com/naz013/ColorSlider/raw/master/res/screenshot.png" width="400" alt="Screenshot">
+<img src="https://github.com/naz013/smooth-bottom-bar/raw/master/res/screenshot.png" width="400" alt="Screenshot">
 
 Sample APP
 --------
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.naz013:ColorSlider:1.0.5'
+    implementation 'com.github.naz013:smooth-bottom-bar:1.0.0'
 }
 ```
 
@@ -30,73 +30,15 @@ Usage
 -----
 Default (Material colors picker):
 ```xml
-<com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider"
+<com.github.naz013.smoothbottombar.SmoothBottomBar
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="36dp" />
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        app:bar_selectorColor="#80ffffff"
+        app:bar_textColor="#ffffff"
+        app:bar_background="#d67388" />
 ```
-Gradient (Params: cs_from_color, cs_to_color, cs_steps):
-via XML:
-```xml
-<com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider"
-        android:layout_width="match_parent"
-        app:cs_from_color="#F44336"
-        app:cs_steps="500"
-        app:cs_to_color="#40F44336"
-        android:layout_height="36dp" />
-```
-in code:
-```java
-colorSlider.setGradient(@ColorInt int fromColor, @ColorInt int toColor, int steps)
-```
-
-Gradient from array of colors:
-in code:
-```java
-colorSlider.setGradient(@ColorInt int[] colors, int steps)
-```
-
-
-Array of color resources (Params: cs_colors):
-via XML:
-```xml
-<com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider"
-        android:layout_width="match_parent"
-        app:cs_colors="@array/colors"
-        android:layout_height="36dp" />
-```
-in code:
-```java
-colorSlider.setColors(@ColorInt int[] colors)
-```
-
-
-String array of hex colors (Params: cs_hex_colors):
-via XML:
-```xml
-<com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider"
-        android:layout_width="match_parent"
-        app:cs_hex_colors="@array/hex_colors"
-        android:layout_height="36dp" />
-```
-in code:
-```java
-colorSlider.setHexColors(String[] hexColors)
-```
-
-Also you can set listener for color picker:
-```java
-colorSlider.setListener(new ColorSlider.OnColorSelectedListener() {
-        @Override
-        public void onColorChanged(int position, int color) {
-            updateView(color);
-        }
-    })
-```
-
 
 License
 -------

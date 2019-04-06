@@ -1,6 +1,7 @@
 package com.github.naz013.smoothbottombar
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -40,8 +41,8 @@ class SmoothBottomBar : View {
     private var mSelectedItem = 0
     private var isSlided = false
 
-    private var mX: Float = 0.toFloat()
-    private var mY: Float = 0.toFloat()
+    private var mX: Float = 0f
+    private var mY: Float = 0f
 
     private var mOnTabSelectedListener: OnTabSelectedListener? = null
 
@@ -96,6 +97,7 @@ class SmoothBottomBar : View {
         }
     }
 
+    @Suppress("unused")
     fun setOnTabSelectedListener(listener: ((position: Int) -> Unit)?) {
         this.mOnTabSelectedListener = object : OnTabSelectedListener {
             override fun onTabSelected(position: Int) {
@@ -104,8 +106,53 @@ class SmoothBottomBar : View {
         }
     }
 
+    @Suppress("unused")
     fun setOnTabSelectedListener(listener: OnTabSelectedListener?) {
         this.mOnTabSelectedListener = listener
+    }
+
+    @Suppress("unused")
+    override fun setBackgroundColor(@ColorInt color: Int) {
+        this.mBgColor = color
+        this.invalidate()
+    }
+
+    @Suppress("unused")
+    fun setSelectorColor(@ColorInt color: Int) {
+        this.mSelectorColor = color
+        this.mSelectorPaint.color = color
+        this.invalidate()
+    }
+
+    @Suppress("unused")
+    fun setTextColor(@ColorInt color: Int) {
+        this.mTextColor = color
+        this.mTextPaint.color = color
+        this.invalidate()
+    }
+
+    /**
+     * Disabled
+     */
+    override fun setBackground(background: Drawable?) {
+    }
+
+    /**
+     * Disabled
+     */
+    override fun setBackgroundResource(resid: Int) {
+    }
+
+    /**
+     * Disabled
+     */
+    override fun setBackgroundTintList(tint: ColorStateList?) {
+    }
+
+    /**
+     * Disabled
+     */
+    override fun setBackgroundTintMode(tintMode: PorterDuff.Mode?) {
     }
 
     fun setTabs(tabs: List<Tab>) {
@@ -113,7 +160,7 @@ class SmoothBottomBar : View {
             throw IllegalArgumentException("View can only handle from 2 to 5 tabs")
         }
         this.mTabs = tabs
-        invalidate()
+        this.invalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -236,6 +283,7 @@ class SmoothBottomBar : View {
     }
 
     private fun toDrawable(@DrawableRes res: Int): Bitmap? {
+        if (res == 0) return null
         val drawable = ContextCompat.getDrawable(context, res)
         return drawable?.toBitmap()
     }

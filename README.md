@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.naz013:smooth-bottom-bar:1.0.0'
+    implementation 'com.github.naz013:smooth-bottom-bar:1.0.1'
 }
 ```
 

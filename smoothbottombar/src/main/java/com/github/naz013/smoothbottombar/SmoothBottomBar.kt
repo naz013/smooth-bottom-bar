@@ -67,7 +67,7 @@ class SmoothBottomBar : View {
         }
 
         mTextPaint.color = mTextColor
-        mTextPaint.style = Paint.Style.STROKE
+        mTextPaint.style = Paint.Style.FILL
         mTextPaint.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 15.toFloat(), resources.displayMetrics)
 
         mSelectorPaint.color = mSelectorColor

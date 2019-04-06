@@ -141,7 +141,7 @@ class SmoothBottomBar : View {
                 val onPoint = PointF(leftHalf.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
                 val offPoint = PointF(rect.centerX().toFloat() - iconHeightHalf, rect.centerY().toFloat() - iconHeightHalf)
                 val iconBounds = Rect(0, 0, iconHeight, iconHeight)
-                val icon = Icon(onPoint, toDrawable(tab.icon), 255, offPoint, mIconPaint, iconBounds)
+                val icon = Icon(onPoint, toDrawable(tab.icon), offPoint, mIconPaint, iconBounds)
                 val innerTab = InnerTab(icon, label, rect)
                 elements.add(innerTab)
                 if (i == 0) {
@@ -291,8 +291,9 @@ class SmoothBottomBar : View {
         }
     }
 
-    inner class Icon(private val onPoint: PointF, private val drawable: Bitmap?, var alpha: Int = 123,
+    inner class Icon(private val onPoint: PointF, private val drawable: Bitmap?,
                      defaultPoint: PointF, paint: Paint, bounds: Rect) : PaintObject(defaultPoint, paint, bounds) {
+        var alpha: Int = 123
 
         private val alphaPropertyAnim = object : FloatPropertyCompat<Icon>("icon_alpha") {
             override fun getValue(icon: Icon?): Float {

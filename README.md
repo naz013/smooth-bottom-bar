@@ -1,5 +1,5 @@
 # BottomNavigationView
-Simple bottom navigation view library for Android (Kotlin)
+Simple bottom navigation view library for Android (Kotlin, AndroidX, Spring Animation)
 
 [![](https://jitpack.io/v/naz013/smooth-bottom-bar.svg)](https://jitpack.io/#naz013/smooth-bottom-bar)
 
@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     implementation 'com.github.naz013:smooth-bottom-bar:1.0.1'
+    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
 }
 ```
 

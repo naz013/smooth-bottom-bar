@@ -23,6 +23,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.1'
+    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
+//    implementation 'com.github.naz013:smooth-bottom-bar:1.0.1'
     implementation project(':smoothbottombar')
 }

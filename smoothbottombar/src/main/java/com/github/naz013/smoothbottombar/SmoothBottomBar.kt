@@ -229,7 +229,7 @@ class SmoothBottomBar : View {
                 return true
             }
             event.action == MotionEvent.ACTION_MOVE -> {
-                if (Math.abs(event.x - mX) > 10 || Math.abs(event.y - mY) > 10) {
+                if (Math.abs(event.x - mX) > 30 || Math.abs(event.y - mY) > 30) {
                     isSlided = true
                     return false
                 }
@@ -421,7 +421,7 @@ class SmoothBottomBar : View {
             paint.alpha = alpha
             paint.getTextBounds(text, 0, text.length, r)
 
-            val fac = bounds.width().toFloat() * 0.9f / r.width().toFloat()
+            val fac = bounds.width().toFloat() * 0.85f / r.width().toFloat()
             if (fac < 1.0f) {
                 mTextPaint.textSize = mTextPaint.textSize * fac
             }
